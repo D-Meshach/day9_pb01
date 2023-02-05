@@ -26,6 +26,13 @@ case $empCheck in
 
 }
 
+function dailywage(){
+
+local empHr=$1
+echo $(( $empHr * $WAGE_PER_HR ))
+
+}
+
 while [[ $totalWorkingHour  -lt MAX_WORKING_HOUR || $totalWorkingDays -lt MAX_WORKING_DAYS ]]
 do
    ((totalWorkingDays++))
@@ -34,10 +41,11 @@ do
    totalWorkingHour=$(($totalWorkingHour+$workingHour))
    salary=$(($WAGE_PER_HR * $workingHour));
    totalSalary=$(($totalSalary + $salary));
+   dailywage[$totalWorkingDays]="$( dailywage $workingHour )";
 
 done
 
 echo "Employee has earned $totalSalary in a month";
 echo "Employee Total Working Hour=" $(($totalWorkingHour-$workingHour));
 echo "Employee Total Working Days=" $(($totalWorkingDays-1))
-
+echo "${dailywage[@]}"
