@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /usr/bin/bash -x
 #Constants
 WAGE_PER_HR=20;
 IS_FULL_TIME=8;
@@ -11,12 +11,12 @@ workingHour=0;
 totalSalary=0;
 totalWorkingHour=0;
 totalWorkingDays=0;
-
+declare -A dailywage
 #Here working hour is assigned
 function getHrs(){
 
-local empCheck=$1
-case $empCheck in
+   local empCheck=$1
+   case $empCheck in
          0)workingHour=0;;
          1)workingHour=8;;
          2)workingHour=8;;
@@ -28,8 +28,8 @@ case $empCheck in
 
 function dailywage(){
 
-local empHr=$1
-echo $(( $empHr * $WAGE_PER_HR ))
+   local empHr=$1
+   echo $(( $empHr * $WAGE_PER_HR ))
 
 }
 
@@ -41,11 +41,11 @@ do
    totalWorkingHour=$(($totalWorkingHour+$workingHour))
    salary=$(($WAGE_PER_HR * $workingHour));
    totalSalary=$(($totalSalary + $salary));
-   dailywage[$totalWorkingDays]="$( dailywage $workingHour )";
+   dailywage["DAY "$totalWorkingDays]="$( dailywage $workingHour )";
 
 done
 
 echo "Employee has earned $totalSalary in a month";
 echo "Employee Total Working Hour=" $(($totalWorkingHour-$workingHour));
 echo "Employee Total Working Days=" $(($totalWorkingDays-1))
-echo "${dailywage[@]}"
+echo "${!dailywage[@]}"
