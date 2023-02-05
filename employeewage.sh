@@ -1,7 +1,4 @@
 #! /bin/bash -x
-
-echo "Welcome To Employee Wage Computation Program on Master Branch";
-
 #Constants
 WAGE_PER_HR=20;
 IS_FULL_TIME=8;
@@ -15,25 +12,32 @@ totalSalary=0;
 totalWorkingHour=0;
 totalWorkingDays=0;
 
+#Here working hour is assigned
+function getHrs(){
 
+local empCheck=$1
+case $empCheck in
+         0)workingHour=0;;
+         1)workingHour=8;;
+         2)workingHour=8;;
+   esac
+        echo $workingHour;
+
+
+}
 
 while [[ $totalWorkingHour  -lt MAX_WORKING_HOUR || $totalWorkingDays -lt MAX_WORKING_DAYS ]]
 do
-   ((totalWorkingDays++));
+   ((totalWorkingDays++))
    isPresent=$(($RANDOM%3));
-   case $isPresent in
-         0)echo "Employee is absent";
-            workingHour=0;;
-         1)echo "Employee is present";
-            workingHour=8;;
-         2)echo "Employee is working part time";
-            workingHour=8;;
-   esac
+   workingHour="$( getHrs $isPresent )"
    totalWorkingHour=$(($totalWorkingHour+$workingHour))
    salary=$(($WAGE_PER_HR * $workingHour));
    totalSalary=$(($totalSalary + $salary));
 
 done
+
 echo "Employee has earned $totalSalary in a month";
 echo "Employee Total Working Hour=" $(($totalWorkingHour-$workingHour));
 echo "Employee Total Working Days=" $(($totalWorkingDays-1))
+
